@@ -10,7 +10,8 @@
 
 (defn parens-button []
   [:div
-    {:on-click #(swap! matched-parens inc)}
+    {:on-click #(swap! matched-parens inc)
+     :on-mouse-down #(.preventDefault %)}
     [:div.huge-parens
       "( )"]
     [:div.instructions
