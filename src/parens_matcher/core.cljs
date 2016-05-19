@@ -6,7 +6,7 @@
 (defonce matched-parens (r/atom 0))
 
 (defn score []
-  [:div.score "Parens matched: " @matched-parens])
+  [:div.score "(parens-matched " @matched-parens ")"])
 
 (defn parens-button []
   [:div
@@ -14,7 +14,7 @@
     [:div.huge-parens
       "( )"]
     [:div.instructions
-      "Click to match parens"]])
+      "(Click to match parens)"]])
 
 (defn app-root []
   [:div.container
