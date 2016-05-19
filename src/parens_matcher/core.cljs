@@ -9,7 +9,7 @@
   [:div.score "(parens-matched " @matched-parens ")"])
 
 (defn parens-button []
-  [:div
+  [:div.clickable
     {:on-click #(swap! matched-parens inc)
      :on-mouse-down #(.preventDefault %)}
     [:div.huge-parens
