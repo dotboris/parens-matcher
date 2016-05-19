@@ -1,9 +1,17 @@
 (ns parens-matcher.core
-  (:require [reagent.core :as r]))
+  (:require [reagent.core :as r]
+            [matchbox.core :as m]
+            [matchbox.reagent :as mr]))
 
 (enable-console-print!)
 
-(defonce matched-parens (r/atom 0))
+(defonce root (m/connect "https://parens-matcher.firebaseio.com/"))
+
+(defonce matched-parens (mr/sync-rw (m/get-in root [:matched-parens])))
+
+(defonce _init
+  (do (m/auth-anon root)
+      (when-not @matched-parens (reset! matched-parens 0))))
 
 (defn score []
   [:div.score "(parens-matched " @matched-parens ")"])
