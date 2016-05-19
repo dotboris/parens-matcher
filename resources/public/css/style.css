@@ -1,2 +1,14 @@
-/* some style */
+.huge-parens {
+  font-family: monospace;
+  font-weight: bolder;
+  font-size: 15rem;
+  text-align: center;
+}
 
+.instructions {
+  text-align: center;
+}
+
+.score {
+  font-size: 3rem;
+}

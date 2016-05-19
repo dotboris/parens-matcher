@@ -1,17 +1,24 @@
 (ns parens-matcher.core
-  (:require ))
+  (:require [reagent.core :as r]))
 
 (enable-console-print!)
 
-(println "This text is printed from src/parens-matcher/core.cljs. Go ahead and edit it and see reloading in action.")
+(defonce matched-parens (r/atom 0))
 
-;; define your app data so that it doesn't get over-written on reload
+(defn score []
+  [:div.score "Parens matched: " @matched-parens])
 
-(defonce app-state (atom {:text "Hello world!"}))
+(defn parens-button []
+  [:div
+    {:on-click #(swap! matched-parens inc)}
+    [:div.huge-parens
+      "( )"]
+    [:div.instructions
+      "Click to match parens"]])
 
+(defn app-root []
+  [:div.container
+    [score]
+    [parens-button]])
 
-(defn on-js-reload []
-  ;; optionally touch your app-state to force rerendering depending on
-  ;; your application
-  ;; (swap! app-state update-in [:__figwheel_counter] inc)
-)
+(r/render-component [app-root] (.getElementById js/document "app"))
