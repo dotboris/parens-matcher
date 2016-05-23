@@ -16,3 +16,8 @@
 .score {
   font-size: 3rem;
 }
+
+.upgrade-button {
+  font-family: monospace;
+  text-align: left;
+}
