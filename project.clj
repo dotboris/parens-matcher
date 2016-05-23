@@ -25,7 +25,7 @@
                 :source-paths ["src"]
 
                 ;; If no code is to be run, set :figwheel true for continued automagical reloading
-                :figwheel {:on-jsload "parens-matcher.core/on-js-reload"}
+                :figwheel true
 
                 :compiler {:main parens-matcher.core
                            :asset-path "js/compiled/out"
