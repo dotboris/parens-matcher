@@ -3,7 +3,8 @@
   (:require [reagent.core :as r]
             [matchbox.core :as m]
             [matchbox.reagent :as mr]
-            [goog.events :as e]))
+            [goog.events :as e]
+            [goog.format :as fmt]))
 
 (enable-console-print!)
 
@@ -21,6 +22,9 @@
   {:foobar 1
    :bizbaz 10
    :qixqux 100})
+
+(defn format-large-number [number]
+  (fmt/numericValueToString number 3))
 
 (defn level [upgrade]
   (-> @levels
@@ -58,7 +62,8 @@
       .start)
 
 (defn score []
-  [:div.score "(parens-matched " (or @matched-parens 0) ")"])
+  [:div.score
+    "(parens-matched " (format-large-number (or @matched-parens 0)) ")"])
 
 (defn parens-button []
   [:div.clickable
@@ -70,7 +75,8 @@
       "(Click to match parens)"]])
 
 (defn parens-per-second-view []
-  [:div.parens-per-second "(parens-per-second " (parens-per-second) ")"])
+  [:div.parens-per-second
+    "(parens-per-second " (format-large-number (parens-per-second)) ")"])
 
 (defn indent []
   [:span {:dangerouslySetInnerHTML {:__html "&nbsp;&nbsp;"}}])
@@ -81,7 +87,8 @@
      :on-click #(buy! key)}
     [:div "(" title]
     [:div [indent] ":level " (level key)]
-    [:div [indent] ":upgrade-cost " (upgrade-cost key) ")"]])
+    [:div [indent] ":upgrade-cost "
+          (format-large-number (upgrade-cost key)) ")"]])
 
 (defn upgrade-buttons []
   [:div
