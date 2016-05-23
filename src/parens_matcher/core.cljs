@@ -1,7 +1,9 @@
 (ns parens-matcher.core
+  (:import [goog Timer])
   (:require [reagent.core :as r]
             [matchbox.core :as m]
-            [matchbox.reagent :as mr]))
+            [matchbox.reagent :as mr]
+            [goog.events :as e]))
 
 (enable-console-print!)
 
@@ -14,6 +16,11 @@
   {:foobar 10
    :bizbaz 100
    :qixqux 1000})
+
+(def parens-per-level
+  {:foobar 1
+   :bizbaz 10
+   :qixqux 100})
 
 (defn level [upgrade]
   (-> @levels
@@ -31,10 +38,24 @@
   (>= (or @matched-parens 0)
       (upgrade-cost upgrade)))
 
+(defn parens-per-second []
+  (let [parens (for [[upgrade level] @levels]
+                  (* level (parens-per-level upgrade)))]
+    (reduce + parens)))
+
 (defn buy! [upgrade]
   (when (can-upgrade? upgrade)
     (swap! matched-parens - (upgrade-cost upgrade))
     (swap! levels update-in [upgrade] inc)))
+
+(defn apply-upgrades! []
+  (swap! matched-parens + (parens-per-second)))
+
+(defonce timer (Timer. 1000))
+(doto timer
+      e/removeAll
+      (e/listen "tick" apply-upgrades!)
+      .start)
 
 (defn score []
   [:div.score "(parens-matched " (or @matched-parens 0) ")"])
@@ -47,6 +68,9 @@
       "( )"]
     [:div.instructions
       "(Click to match parens)"]])
+
+(defn parens-per-second-view []
+  [:div.parens-per-second "(parens-per-second " (parens-per-second) ")"])
 
 (defn indent []
   [:span {:dangerouslySetInnerHTML {:__html "&nbsp;&nbsp;"}}])
@@ -61,6 +85,7 @@
 
 (defn upgrade-buttons []
   [:div
+    [parens-per-second-view]
     [upgrade-button "foobar" :foobar]
     [upgrade-button "bizbaz" :bizbaz]
     [upgrade-button "qixqux" :qixqux]])

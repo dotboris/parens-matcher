@@ -17,6 +17,10 @@
   font-size: 3rem;
 }
 
+.parens-per-second {
+  font-size: 2.3rem;
+}
+
 .upgrade-button {
   font-family: monospace;
   text-align: left;
