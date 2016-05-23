@@ -9,12 +9,10 @@
 
 (defonce matched-parens (mr/sync-rw (m/get-in root [:matched-parens])))
 
-(defonce _init
-  (do (m/auth-anon root)
-      (when-not @matched-parens (reset! matched-parens 0))))
+(defonce _init (m/auth-anon root))
 
 (defn score []
-  [:div.score "(parens-matched " @matched-parens ")"])
+  [:div.score "(parens-matched " (or @matched-parens 0) ")"])
 
 (defn parens-button []
   [:div.clickable
